@@ -30,16 +30,27 @@ app.get('/', (request, response) => {
 
 app.get('/info', (request, response) => {
 
-    const info = `<div>
-        <p>Phonebook has info for ${persons.length} people</p>
-        <p>${new Date()}</p>
-    </div>`
+    const info =
+        `<div>
+            <p>Phonebook has info for ${persons.length} people</p>
+            <p>${new Date()}</p>
+        </div>`
 
     response.send(info)
 })
 
 app.get('/api/persons', (request, response) => {
     response.json(persons)
+})
+
+app.get('/api/persons/:id', (request, response) => {
+    const id = Number(request.params.id)
+    const person = persons.find(note => note.id === id)
+
+    if (person) {
+        response.json(person)
+    }
+    else { response.status(404).end() }
 })
 
 const PORT = 3001
